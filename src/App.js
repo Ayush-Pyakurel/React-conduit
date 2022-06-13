@@ -1,6 +1,8 @@
 import './App.css';
 import Headers from './Components/Headers';
 import './Components/Headers.css';
+import './Components/SignIn.css';
+import './Components/SignUp.css';
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
 
@@ -13,6 +15,7 @@ function App() {
     <div className='App'>
       <Router>
         <Headers />
+
         <Switch>
           <Route exact path='/' component={Dashboard} />
           <Route path='/signin' component={SignIn} />

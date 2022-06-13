@@ -1,0 +1,10 @@
+* {
+  position: relative;
+}
+
+.signInForm {
+  width: 50%;
+  position: absolute;
+  left: 30%;
+  margin-top: 10%;
+}
