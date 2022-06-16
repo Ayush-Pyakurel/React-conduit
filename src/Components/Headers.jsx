@@ -4,14 +4,22 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
+import { useHistory } from 'react-router-dom';
 
 function Headers() {
+  const history = useHistory();
+  const Logout = () => {
+    localStorage.removeItem('token');
+    //window.location.reload();
+    history.push('/signin');
+  };
+
   return (
     <AppBar position='static' style={{ backgroundColor: '	white' }}>
       <Container maxWidth='xl'>
         <Toolbar disableGutters>
           <Typography className='title' variant='h3'>
-            <Link to='/' style={{ color: 'green', textDecoration: 'none' }}>
+            <Link to='/' style={{ color: ' #5cb85c', textDecoration: 'none' }}>
               Conduit
             </Link>
           </Typography>
@@ -19,7 +27,7 @@ function Headers() {
             <li>
               <Link
                 to='/signup'
-                style={{ color: 'green', textDecoration: 'none' }}
+                style={{ color: ' #5cb85c', textDecoration: 'none' }}
               >
                 Sign Up
               </Link>
@@ -28,7 +36,7 @@ function Headers() {
               <Link
                 to='/signin'
                 style={{
-                  color: 'green',
+                  color: ' #5cb85c',
                   textDecoration: 'none',
                   marginTop: '3px',
                 }}
@@ -36,7 +44,12 @@ function Headers() {
                 Sign In
               </Link>
             </li>
-            <li style={{ color: 'green' }}>Logout</li>
+            <li
+              style={{ color: ' #5cb85c', cursor: 'pointer' }}
+              onClick={Logout}
+            >
+              Logout
+            </li>
           </ul>
         </Toolbar>
       </Container>

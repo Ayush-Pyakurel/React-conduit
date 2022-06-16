@@ -5,6 +5,7 @@ import './Components/SignIn.css';
 import './Components/SignUp.css';
 import SignIn from './Components/SignIn';
 import SignUp from './Components/SignUp';
+import './Components/Dashboard.css';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 

@@ -30,19 +30,34 @@ function SignUp() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, touchedFields, isTouched },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
-  const formSubmit = (e) => {
-    console.log(e);
+  const formSubmit = async (user) => {
+    console.log(user);
+    await fetch('https://api.realworld.io/api/users', {
+      body: JSON.stringify({
+        user: {
+          username: user.username,
+          email: user.email,
+          password: user.password,
+        },
+      }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   };
 
   return (
     <Form className='signUpForm' onSubmit={handleSubmit(formSubmit)}>
       <h2>Sign Up</h2>
-      <Link to='/signin' style={{ color: 'green', marginButton: '10px' }}>
+      <Link to='/signin' style={{ color: ' #5cb85c', marginButton: '10px' }}>
         Have an account?
       </Link>
       <Form.Group className='mb-3' controlId='formBasicUsername'>
@@ -52,9 +67,10 @@ function SignUp() {
           style={{ height: '50px' }}
           name='username'
           required
-          {...register('username', { required: true })}
+          {...register('username', { required: true }, { isTouched: true })}
         />
         {errors.username?.message ? <p>{errors.username?.message}</p> : null}
+        {touchedFields.username && <p>Should enter Username</p>}
       </Form.Group>
 
       <Form.Group className='mb-3' controlId='formBasicEmail'>
@@ -76,7 +92,7 @@ function SignUp() {
           style={{ height: '50px' }}
           name='password'
           required
-          {...register('password', { required: true })}
+          {...register('password', { isDirty: false })}
         />
         {errors.password ? <p>{errors.password.message}</p> : null}
       </Form.Group>

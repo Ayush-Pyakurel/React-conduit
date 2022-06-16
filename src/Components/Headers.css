@@ -1,5 +1,7 @@
 .nav-link {
-  position: relative;
+  position: absolute;
+  right: 1rem;
+  font-size: 1.15rem;
 }
 .nav-link li {
   display: inline;

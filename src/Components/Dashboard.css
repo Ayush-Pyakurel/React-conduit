@@ -1,0 +1,16 @@
+.banner {
+  background-color: #5cb85c;
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.conduit,
+.item {
+  color: white;
+}
+
+.conduit {
+  font-size: 4rem;
+  font-weight: bolder;
+}

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useHistory } from 'react-router-dom';
+// import { useState } from 'react';
 
 const schema = yup.object().shape({
   email: yup.string().email('Email is invalid').required('Email is required'),
@@ -21,6 +23,7 @@ const schema = yup.object().shape({
 });
 
 function SignIn() {
+  const history = useHistory();
   const {
     register,
     handleSubmit,
@@ -29,15 +32,46 @@ function SignIn() {
     resolver: yupResolver(schema),
   });
 
-  const formSubmit = (e) => {
-    console.log(e);
+  // const [email, setEmail] = useState('');
+  // const [password, setPassword] = useState('');
+
+  // const handleEmailChange = (e) => {
+  //   console.log(e);
+  //   setEmail(e.target.value);
+  //   console.log(email);
+  // };
+
+  const formSubmit = async (user) => {
+    //console.log(user);
+
+    await fetch('https://api.realworld.io/api/users/login', {
+      body: JSON.stringify({
+        user: {
+          email: user.email,
+          password: user.password,
+        },
+      }),
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        localStorage.setItem('token', data.user.token);
+
+        history.push('/');
+        console.log(data);
+      });
   };
 
   return (
     <Form className='signInForm' onSubmit={handleSubmit(formSubmit)}>
       <Form.Group className='mb-3' controlId='formBasicEmail'>
         <h2>Sign In</h2>
-        <Link to='/signup' style={{ color: 'green', marginButton: '10px' }}>
+        <Link to='/signup' style={{ color: ' #5cb85c', marginButton: '10px' }}>
           Need an account?
         </Link>
         <Form.Control
@@ -46,7 +80,7 @@ function SignIn() {
           style={{ height: '50px' }}
           name='email'
           required
-          {...register('email', { required: true }, touchedFields)}
+          {...register('email', { isTouched: false }, touchedFields)}
         />
         {errors.email ? (
           <p style={{ color: 'red' }}>{errors.email?.message}</p>
@@ -62,13 +96,14 @@ function SignIn() {
           placeholder='Password'
           style={{ height: '50px' }}
           name='password'
+          // onChange={(e) => setPassword(e.target.value)}
           required
           {...register('password', { required: true }, touchedFields)}
         />
         {errors.password ? <p>{errors.password?.message}</p> : null}
         {touchedFields?.password && <p>Should enter Password</p>}
       </Form.Group>
-      <Button variant='success' type='submit'>
+      <Button variant='success' type='submit' disabled={false}>
         Submit
       </Button>
     </Form>
