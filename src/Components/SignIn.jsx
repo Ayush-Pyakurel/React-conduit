@@ -7,6 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useHistory } from 'react-router-dom';
 // import { useState } from 'react';
+import { useEffect } from 'react';
 
 const schema = yup.object().shape({
   email: yup.string().email('Email is invalid').required('Email is required'),
@@ -22,7 +23,7 @@ const schema = yup.object().shape({
     .max(12),
 });
 
-function SignIn() {
+function SignIn({ setLoggedIn }) {
   const history = useHistory();
   const {
     register,
@@ -30,6 +31,10 @@ function SignIn() {
     formState: { errors, touchedFields },
   } = useForm({
     resolver: yupResolver(schema),
+  });
+
+  useEffect(() => {
+    handleSubmit(formSubmit);
   });
 
   // const [email, setEmail] = useState('');
@@ -41,9 +46,9 @@ function SignIn() {
   //   console.log(email);
   // };
 
-  const formSubmit = async (user) => {
+  const formSubmit = async (user, e) => {
     //console.log(user);
-
+    e.preventDefault();
     await fetch('https://api.realworld.io/api/users/login', {
       body: JSON.stringify({
         user: {
@@ -61,8 +66,10 @@ function SignIn() {
       })
       .then((data) => {
         localStorage.setItem('token', data.user.token);
-
-        history.push('/');
+        if (localStorage.getItem('token')) {
+          setLoggedIn(true);
+          history.push('/');
+        }
         console.log(data);
       });
   };

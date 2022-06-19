@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { useHistory } from 'react-router-dom';
 
-function Headers() {
+function Headers({ setLoggedIn, loggedIn }) {
   const history = useHistory();
   const Logout = () => {
     localStorage.removeItem('token');
     //window.location.reload();
+
+    setLoggedIn(false);
+    console.log(loggedIn);
     history.push('/signin');
   };
 
@@ -24,32 +27,55 @@ function Headers() {
             </Link>
           </Typography>
           <ul className='nav-link'>
-            <li>
-              <Link
-                to='/signup'
-                style={{ color: ' #5cb85c', textDecoration: 'none' }}
-              >
-                Sign Up
-              </Link>
-            </li>
-            <li>
-              <Link
-                to='/signin'
-                style={{
-                  color: ' #5cb85c',
-                  textDecoration: 'none',
-                  marginTop: '3px',
-                }}
-              >
-                Sign In
-              </Link>
-            </li>
-            <li
-              style={{ color: ' #5cb85c', cursor: 'pointer' }}
-              onClick={Logout}
-            >
-              Logout
-            </li>
+            {loggedIn ? (
+              <>
+                <li>
+                  <Link
+                    to='/newarticle'
+                    style={{ color: ' #5cb85c', textDecoration: 'none' }}
+                  >
+                    New Article
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/settings'
+                    style={{ color: ' #5cb85c', textDecoration: 'none' }}
+                  >
+                    Settings
+                  </Link>
+                </li>
+                <li
+                  style={{ color: ' #5cb85c', cursor: 'pointer' }}
+                  onClick={Logout}
+                >
+                  Logout
+                </li>
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link
+                    to='/signup'
+                    style={{ color: ' #5cb85c', textDecoration: 'none' }}
+                  >
+                    Sign Up
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/signin'
+                    style={{
+                      color: ' #5cb85c',
+                      textDecoration: 'none',
+                      marginTop: '3px',
+                    }}
+                  >
+                    Sign In
+                  </Link>
+                </li>
+              </>
+            )}
           </ul>
         </Toolbar>
       </Container>
