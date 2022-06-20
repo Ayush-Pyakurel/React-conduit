@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import toast, { Toaster } from 'react-hot-toast';
 
 const schema = yup.object().shape({
   username: yup.string().required('Username is required'),
@@ -50,12 +51,19 @@ function SignUp() {
         'Content-Type': 'application/json',
       },
     })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((res) => {
+        toast.success('Successfully signed up!');
+        return res.json();
+      })
+      .then((data) => console.log(data))
+      .catch((err) => toast.error(err));
   };
 
   return (
     <Form className='signUpForm' onSubmit={handleSubmit(formSubmit)}>
+      <div>
+        <Toaster position='right-buttom' />
+      </div>
       <h2>Sign Up</h2>
       <Link to='/signin' style={{ color: ' #5cb85c', marginButton: '10px' }}>
         Have an account?

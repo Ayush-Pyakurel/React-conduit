@@ -8,6 +8,7 @@ import * as yup from 'yup';
 import { useHistory } from 'react-router-dom';
 // import { useState } from 'react';
 import { useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const schema = yup.object().shape({
   email: yup.string().email('Email is invalid').required('Email is required'),
@@ -69,14 +70,18 @@ function SignIn({ setLoggedIn }) {
         if (localStorage.getItem('token')) {
           setLoggedIn(true);
           history.push('/');
+          toast.success('Successfully signed in!');
         }
-        console.log(data);
-      });
+      })
+      .catch((err) => toast.error(err));
   };
 
   return (
     <Form className='signInForm' onSubmit={handleSubmit(formSubmit)}>
       <Form.Group className='mb-3' controlId='formBasicEmail'>
+        <div>
+          <Toaster position='right-buttom' />
+        </div>
         <h2>Sign In</h2>
         <Link to='/signup' style={{ color: ' #5cb85c', marginButton: '10px' }}>
           Need an account?

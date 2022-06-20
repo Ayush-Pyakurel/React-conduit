@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { useHistory } from 'react-router-dom';
 
-function Headers({ setLoggedIn, loggedIn }) {
+function Headers({ setLoggedIn, loggedIn, user }) {
   const history = useHistory();
   const Logout = () => {
     localStorage.removeItem('token');
@@ -43,6 +43,14 @@ function Headers({ setLoggedIn, loggedIn }) {
                     style={{ color: ' #5cb85c', textDecoration: 'none' }}
                   >
                     Settings
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/user'
+                    style={{ color: ' #5cb85c', textDecoration: 'none' }}
+                  >
+                    {user}
                   </Link>
                 </li>
                 <li
