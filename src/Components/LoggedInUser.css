@@ -1,0 +1,23 @@
+.banner {
+  background-color: lightgray;
+  height: 15rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 15px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+}
+.smiley-logo {
+  width: 100px;
+  height: auto;
+  border-radius: 50%;
+  align-self: center;
+}
+.edit-profile {
+  width: max-content;
+  border-radius: 5%;
+  background-color: transparent;
+  align-self: flex-end;
+  margin-right: 3%;
+}

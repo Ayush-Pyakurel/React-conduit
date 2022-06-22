@@ -15,10 +15,11 @@ import './Components/SignUp.css';
 import './Components/Dashboard.css';
 import './Components/NewArticle.css';
 import './Components/Settings.css';
+import './Components/LoggedInUser.css';
 
 //hooks imports
 import { useState } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
@@ -39,22 +40,17 @@ function App() {
           <Toaster position='buttom-right' />
         </div>
 
-        <Switch>
-          <Route exact path='/' component={Dashboard} />
-          {loggedIn ? (
+        <Routes>
+          <Route exact path='/' element={<Dashboard />} />
+          {!!localStorage.getItem('loggedInStatus') ? (
             <>
-              <Route path='/settings' component={Settings} />
-              <Route path='/newarticle' component={NewArticle} />
+              <Route path='/settings' element={<Settings />} />
+              <Route path='/newarticle' element={<NewArticle />} />
               <Route
                 path='/user'
-                component={() => {
-                  return (
-                    <LoggedInUser
-                      user={loggedInUser}
-                      setUser={setLoggedInUser}
-                    />
-                  );
-                }}
+                element={
+                  <LoggedInUser user={loggedInUser} setUser={setLoggedInUser} />
+                }
               />
             </>
           ) : (
@@ -62,12 +58,10 @@ function App() {
           )}
           <Route
             path='/signin'
-            component={() => {
-              return <SignIn loggedIn={loggedIn} setLoggedIn={setLoggedIn} />;
-            }}
+            element={<SignIn loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
           />
-          <Route path='/signup' component={SignUp} />
-        </Switch>
+          <Route path='/signup' element={<SignUp />} />
+        </Routes>
       </Router>
     </div>
   );

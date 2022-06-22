@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 // import { useState } from 'react';
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
@@ -25,7 +25,8 @@ const schema = yup.object().shape({
 });
 
 function SignIn({ setLoggedIn }) {
-  const history = useHistory();
+  let currentUser;
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -68,8 +69,10 @@ function SignIn({ setLoggedIn }) {
       .then((data) => {
         localStorage.setItem('token', data.user.token);
         if (localStorage.getItem('token')) {
-          setLoggedIn(true);
-          history.push('/');
+          currentUser = data.user.username;
+          localStorage.setItem('loggedInStatus', true);
+          localStorage.setItem('loggedInUser', currentUser);
+          navigate('/');
           toast.success('Successfully signed in!');
         }
       })

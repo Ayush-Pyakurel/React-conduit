@@ -4,17 +4,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Container from '@mui/material/Container';
 import { Link } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-function Headers({ setLoggedIn, loggedIn, user }) {
-  const history = useHistory();
+function Headers() {
+  const navigate = useNavigate();
   const Logout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('loggedInStatus');
     //window.location.reload();
-
-    setLoggedIn(false);
-    console.log(loggedIn);
-    history.push('/signin');
+    navigate('/signin');
   };
 
   return (
@@ -27,7 +26,7 @@ function Headers({ setLoggedIn, loggedIn, user }) {
             </Link>
           </Typography>
           <ul className='nav-link'>
-            {loggedIn ? (
+            {!!localStorage.getItem('loggedInUser') ? (
               <>
                 <li>
                   <Link
@@ -50,7 +49,7 @@ function Headers({ setLoggedIn, loggedIn, user }) {
                     to='/user'
                     style={{ color: ' #5cb85c', textDecoration: 'none' }}
                   >
-                    {user}
+                    {localStorage.getItem('loggedInUser')}
                   </Link>
                 </li>
                 <li
