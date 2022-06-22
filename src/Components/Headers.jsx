@@ -12,6 +12,7 @@ function Headers() {
     localStorage.removeItem('token');
     localStorage.removeItem('loggedInUser');
     localStorage.removeItem('loggedInStatus');
+    localStorage.removeItem('loggedInUserEmail');
     //window.location.reload();
     navigate('/signin');
   };
@@ -26,7 +27,7 @@ function Headers() {
             </Link>
           </Typography>
           <ul className='nav-link'>
-            {!!localStorage.getItem('loggedInUser') ? (
+            {!!localStorage.getItem('loggedInStatus') ? (
               <>
                 <li>
                   <Link
@@ -46,7 +47,7 @@ function Headers() {
                 </li>
                 <li>
                   <Link
-                    to='/user'
+                    to={`/user/${localStorage.getItem('loggedInUser')}`}
                     style={{ color: ' #5cb85c', textDecoration: 'none' }}
                   >
                     {localStorage.getItem('loggedInUser')}

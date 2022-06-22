@@ -47,7 +47,7 @@ function App() {
               <Route path='/settings' element={<Settings />} />
               <Route path='/newarticle' element={<NewArticle />} />
               <Route
-                path='/user'
+                path='/user/:username'
                 element={
                   <LoggedInUser user={loggedInUser} setUser={setLoggedInUser} />
                 }

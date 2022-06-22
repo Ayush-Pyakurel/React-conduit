@@ -4,6 +4,8 @@ import logo from '../assests/smiley-cyrus.jpeg';
 import { useNavigate } from 'react-router-dom';
 
 function LoggedInUser({ user, setUser }) {
+  let checkToken = !!localStorage.getItem('token');
+
   const navigate = useNavigate();
 
   const getCurrentLoggedInUser = async () => {
@@ -24,8 +26,10 @@ function LoggedInUser({ user, setUser }) {
       });
   };
   useEffect(() => {
-    getCurrentLoggedInUser();
-  });
+    if (checkToken) {
+      getCurrentLoggedInUser();
+    }
+  }, [checkToken]);
 
   const handleEditProfile = () => {
     navigate('/settings');
@@ -33,7 +37,7 @@ function LoggedInUser({ user, setUser }) {
 
   return (
     <div>
-      <div className='banner'>
+      <div className='user-banner'>
         <img className='smiley-logo' src={logo} alt='smiley-face'></img>
         {localStorage.getItem('loggedInUser')}
         <button className='edit-profile' onClick={handleEditProfile}>

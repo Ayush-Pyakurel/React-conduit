@@ -19,9 +19,7 @@ const schema = yup.object().shape({
     .matches(
       /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
       'Password must contain at least 8 characters, one uppercase, one number and one special case character'
-    )
-    .min(6)
-    .max(12),
+    ),
 });
 
 function SignIn({ setLoggedIn }) {
@@ -72,6 +70,7 @@ function SignIn({ setLoggedIn }) {
           currentUser = data.user.username;
           localStorage.setItem('loggedInStatus', true);
           localStorage.setItem('loggedInUser', currentUser);
+          localStorage.setItem('loggedInUserEmail', data.user.email);
           navigate('/');
           toast.success('Successfully signed in!');
         }
