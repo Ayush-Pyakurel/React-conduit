@@ -1,10 +1,11 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { useEffect } from 'react';
 
 const schema = yup.object().shape({
   artileTitle: yup.string().required('Article Title is required'),
@@ -14,13 +15,55 @@ const schema = yup.object().shape({
 });
 
 function NewArticle() {
+  let checkToken = localStorage.getItem('token');
   //connecting yup to react-hook-form
   const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
 
+  // const getCurrentArticleFromFollowedUser = async () => {
+  //   await fetch('https://api.realworld.io/api/articles/feed', {
+  //     method: 'Get',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       Authorization: `Token ${localStorage.getItem('token')}`,
+  //     },
+  //   })
+  //     .then((res) => res.json)
+  //     .then((data) => {
+  //       console.log(data);
+  //     });
+  // };
+  const createNewArticle = async (article) => {
+    await fetch('https://api.realworld.io/api/articles', {
+      method: 'Post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Token ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify({
+        article: {
+          title: article.artileTitle,
+          description: article.aboutArticle,
+          body: article.Article,
+          tagList: [article.tags],
+        },
+      }),
+    })
+      .then((res) => res.json)
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  useEffect(() => {
+    if (checkToken) {
+      handleSubmit(createNewArticle);
+    }
+  }, [checkToken, handleSubmit]);
+
   return (
-    <Form className='forms' onSubmit={handleSubmit}>
+    <Form className='forms' onSubmit={handleSubmit(createNewArticle)}>
       <h2>New Article</h2>
       <Form.Group className='mb-4' controlId='formBasicArticleTitle'>
         <Form.Control

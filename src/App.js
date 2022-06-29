@@ -6,6 +6,9 @@ import NewArticle from './Components/NewArticle';
 import Dashboard from './Components/Dashboard';
 import Settings from './Components/Settings';
 import LoggedInUser from './Components/LoggedInUser';
+//import PageNotFound from './Components/PageNotFound';
+import ProtectedRoute from './Components/ProtectedRoute';
+import Article from './Components/Article';
 
 //css imports
 import './App.css';
@@ -16,6 +19,7 @@ import './Components/Dashboard.css';
 import './Components/NewArticle.css';
 import './Components/Settings.css';
 import './Components/LoggedInUser.css';
+import './Components/Article.css';
 
 //hooks imports
 import { useState } from 'react';
@@ -42,25 +46,24 @@ function App() {
 
         <Routes>
           <Route exact path='/' element={<Dashboard />} />
-          {!!localStorage.getItem('loggedInStatus') ? (
-            <>
-              <Route path='/settings' element={<Settings />} />
-              <Route path='/newarticle' element={<NewArticle />} />
-              <Route
-                path='/user/:username'
-                element={
-                  <LoggedInUser user={loggedInUser} setUser={setLoggedInUser} />
-                }
-              />
-            </>
-          ) : (
-            toast.error('You must be logged in to view this page')
-          )}
+
+          <Route element={<ProtectedRoute />}>
+            <Route path='/settings' element={<Settings />} />
+            <Route path='/newarticle' element={<NewArticle />} />
+            <Route
+              path='/user/:username'
+              element={
+                <LoggedInUser user={loggedInUser} setUser={setLoggedInUser} />
+              }
+            />
+          </Route>
+
           <Route
             path='/signin'
             element={<SignIn loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
           />
           <Route path='/signup' element={<SignUp />} />
+          {/* <Route path='*' element={<PageNotFound />} /> */}
         </Routes>
       </Router>
     </div>

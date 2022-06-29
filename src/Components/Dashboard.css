@@ -14,3 +14,10 @@
   font-size: 4rem;
   font-weight: bolder;
 }
+
+.global-Feed {
+  display: flex;
+  flex-direction: row;
+  float: left;
+  margin: 2rem auto auto 15rem;
+}

@@ -51,7 +51,7 @@ function Settings() {
         },
       }),
     })
-      .then((res) => res.json)
+      .then((res) => res.json())
       .then((data) => {
         // window.location.reload();
       });

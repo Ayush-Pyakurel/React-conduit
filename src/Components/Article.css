@@ -1,0 +1,19 @@
+.article-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.artcle-container,
+h3,
+h6,
+p {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  margin-left: 15%;
+}
+
+.article > .article-body {
+  max-width: auto;
+}
