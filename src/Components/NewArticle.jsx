@@ -15,6 +15,7 @@ const schema = yup.object().shape({
 });
 
 function NewArticle() {
+  const navigate = useNavigate();
   let checkToken = localStorage.getItem('token');
   //connecting yup to react-hook-form
   const { register, handleSubmit } = useForm({
@@ -52,7 +53,8 @@ function NewArticle() {
     })
       .then((res) => res.json)
       .then((data) => {
-        console.log(data);
+        // console.log(data);
+        navigate('/');
       });
   };
 

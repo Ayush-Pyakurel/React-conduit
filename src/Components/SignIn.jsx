@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 // import { useState } from 'react';
 import { useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { useConduitContext } from './ConduitContextProvider';
 
 const schema = yup.object().shape({
   email: yup.string().email('Email is invalid').required('Email is required'),
@@ -22,7 +23,12 @@ const schema = yup.object().shape({
     ),
 });
 
-function SignIn({ setLoggedIn }) {
+function SignIn() {
+  const context = useConduitContext();
+  const { loggedInStatus, setLoggedInStatus, logInCheck } = context;
+  //console.log(loggedInStatus);
+  // console.log(setLoggedInStatus);
+
   let currentUser;
   const navigate = useNavigate();
   const {
@@ -36,15 +42,6 @@ function SignIn({ setLoggedIn }) {
   useEffect(() => {
     handleSubmit(formSubmit);
   });
-
-  // const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-
-  // const handleEmailChange = (e) => {
-  //   console.log(e);
-  //   setEmail(e.target.value);
-  //   console.log(email);
-  // };
 
   const formSubmit = async (user, e) => {
     //console.log(user);
@@ -62,13 +59,16 @@ function SignIn({ setLoggedIn }) {
       },
     })
       .then((res) => {
+        //logInCheck();
+        logInCheck(res.status);
         return res.json();
       })
       .then((data) => {
         localStorage.setItem('token', data.user.token);
         if (localStorage.getItem('token')) {
           currentUser = data.user.username;
-          localStorage.setItem('loggedInStatus', true);
+          console.log(loggedInStatus);
+          localStorage.setItem('loggedInStatus', loggedInStatus);
           localStorage.setItem('loggedInUser', currentUser);
           localStorage.setItem('loggedInUserEmail', data.user.email);
           navigate('/');

@@ -25,6 +25,7 @@ import './Components/Article.css';
 import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
+import ConduitContextProvider from './Components/ConduitContextProvider';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -33,40 +34,41 @@ function App() {
   // console.log(loggedIn);
 
   return (
-    <div className='App'>
-      <Router>
-        <Headers
-          setLoggedIn={setLoggedIn}
-          loggedIn={loggedIn}
-          user={loggedInUser}
-        />
-        <div>
-          <Toaster position='buttom-right' />
-        </div>
-
-        <Routes>
-          <Route exact path='/' element={<Dashboard />} />
-
-          <Route element={<ProtectedRoute />}>
-            <Route path='/settings' element={<Settings />} />
-            <Route path='/newarticle' element={<NewArticle />} />
-            <Route
-              path='/user/:username'
-              element={
-                <LoggedInUser user={loggedInUser} setUser={setLoggedInUser} />
-              }
-            />
-          </Route>
-
-          <Route
-            path='/signin'
-            element={<SignIn loggedIn={loggedIn} setLoggedIn={setLoggedIn} />}
+    <ConduitContextProvider>
+      <div className='App'>
+        <Router>
+          <Headers
+            setLoggedIn={setLoggedIn}
+            loggedIn={loggedIn}
+            user={loggedInUser}
           />
-          <Route path='/signup' element={<SignUp />} />
-          {/* <Route path='*' element={<PageNotFound />} /> */}
-        </Routes>
-      </Router>
-    </div>
+          <div>
+            <Toaster position='buttom-right' />
+          </div>
+
+          <Routes>
+            <Route exact path='/' element={<Dashboard />} />
+
+            <Route element={<ProtectedRoute />}>
+              <Route path='/settings' element={<Settings />} />
+              <Route path='/newarticle' element={<NewArticle />} />
+              <Route
+                path='/user/:username'
+                element={
+                  <LoggedInUser user={loggedInUser} setUser={setLoggedInUser} />
+                }
+              />
+              <Route path='/article' element={<Article />} />
+            </Route>
+
+            <Route path='/signin' element={<SignIn />} />
+
+            <Route path='/signup' element={<SignUp />} />
+            {/* <Route path='*' element={<PageNotFound />} /> */}
+          </Routes>
+        </Router>
+      </div>
+    </ConduitContextProvider>
   );
 }
 

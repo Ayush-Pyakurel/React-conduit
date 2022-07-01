@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
+import toast, { Toaster } from 'react-hot-toast';
 
 const schema = yup.object().shape({
   ImageUrl: yup.string(),
@@ -24,6 +26,7 @@ const schema = yup.object().shape({
 });
 
 function Settings() {
+  let navigate = useNavigate();
   const checkToken = localStorage.getItem('loggedInUser');
 
   const {
@@ -54,6 +57,8 @@ function Settings() {
       .then((res) => res.json())
       .then((data) => {
         // window.location.reload();
+        navigate('/');
+        toast.success('Settings updated successfully!!');
       });
   };
 
@@ -66,6 +71,9 @@ function Settings() {
   return (
     <Form className='form' onSubmit={handleSubmit(updateProfile)}>
       <h2>Settings</h2>
+      <div>
+        <Toaster position='right-buttom' />
+      </div>
       <Form.Group className='mb-4' controlId='formBasicImageUrl'>
         <Form.Control
           type='text'

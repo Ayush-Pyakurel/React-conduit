@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, createContext } from 'react';
 import { Link } from 'react-router-dom';
+import Moment from 'moment';
 
 function Article() {
+  //const formatDate = Moment().format('DD-MM-YYYY');
+
+  let articles;
+  // let slugs = [];
+  const [slugs, setSlugs] = useState([]);
   const [article, setArticle] = useState([]);
   // const [readMore, setReadMore] = useState(false);
 
-  let articles;
   const getGlobalArticle = async () => {
     await fetch('https://api.realworld.io/api/articles?limit=10&offset=0', {
       method: 'Get',
@@ -16,13 +21,24 @@ function Article() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setArticle(data.articles);
+        setArticle(() => data.articles);
+
+        //console.log(data.articles);
         articles = data.articles;
-        //console.log(articles);
-        //article.map((item, index) => console.log(item));
+
+        console.log(articles);
+
+        articles.forEach((item) => {
+          return slugs.push(item.slug);
+        });
       })
       .catch((err) => alert(err));
+    //setSlugs(slugs);
+    // console.log(slugs);
+    // console.log(slugs);
   };
+
+  console.log(slugs);
 
   useEffect(() => {
     getGlobalArticle();
@@ -50,9 +66,17 @@ function Article() {
               {item.author.username}
             </Link>{' '}
           </h3>
-          <h6 style={{ opacity: ' 0.3' }}>{item.createdAt}</h6>
+          <h6 style={{ opacity: ' 0.3' }}>
+            {Moment(item.createdAt).format('MMMM Do YYYY')}
+          </h6>
           <h3 style={{ fontSize: '1.5rem' }}>{item.title}</h3>
           <p className='article-body'>{item.body}</p>
+          <p> {item.slug}</p>
+
+          <Link className='articleTags' to='/article'>
+            {item.tagList}
+          </Link>
+
           <hr
             style={{
               marginTop: '60px',

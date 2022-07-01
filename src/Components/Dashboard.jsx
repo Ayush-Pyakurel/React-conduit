@@ -1,4 +1,5 @@
 import Article from './Article';
+import Tags from './Tags';
 
 function Dashboard() {
   const showGlobalFeed = () => {};
@@ -37,6 +38,7 @@ function Dashboard() {
       {localStorage.getItem('loggedInStatus') && (
         <div className='global-article'>
           <Article />
+          <Tags />
         </div>
       )}
     </>
